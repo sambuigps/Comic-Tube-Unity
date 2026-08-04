@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc587039d79e804495a16ce60a722bd, type: 3}
   m_Name: Services
   m_EditorClassIdentifier: Assembly-CSharp-Editor::ServicesSO
-  serviceName: 
-  services: []
+  serviceName: SO
+  services:
+  - service: SO
+    getter: SO
+  - service: UI_Manager
+    getter: UI
