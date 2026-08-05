@@ -50,7 +50,7 @@ public class UI_Manager : BaseService<UI_Manager_Data>
 
     public override void Start()
     {
-        SetUI(UI_Type.None);
+        SetUI(UI_Type.SignIn);
     }
 
     public void Disable()
@@ -147,5 +147,6 @@ public class UI_Manager : BaseService<UI_Manager_Data>
 [System.Serializable]
 public enum UI_Type
 {
-    None
+    None,
+    SignIn
 }
