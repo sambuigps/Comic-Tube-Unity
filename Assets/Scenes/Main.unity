@@ -384,6 +384,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5952d4d9f43d4ec4a8b551fea69ec062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Services
+  so_data:
+    env: {fileID: 11400000, guid: 4eeedfdf969b5294e9e58dc33fda168f, type: 2}
   ui_manager_data:
     allMenus:
     - type: 0
