@@ -11,8 +11,10 @@ public class Services : MonoBehaviour
 
     #region GENERATED_FIELDS_AND_GETTERS
     [SerializeField] SO_Data so_data;
+    [SerializeField] SaveDataManager_Data savedatamanager_data;
     [SerializeField] UI_Manager_Data ui_manager_data;
     public static SO SO => GetService<SO>();
+    public static SaveDataManager Save => GetService<SaveDataManager>();
     public static UI_Manager UI => GetService<UI_Manager>();
     #endregion
 
@@ -20,6 +22,7 @@ public class Services : MonoBehaviour
     {
         #region GENERATED_DICTIONARY
         { typeof(SO), new SO() },
+        { typeof(SaveDataManager), new SaveDataManager() },
         { typeof(UI_Manager), new UI_Manager() },
         #endregion
     };
@@ -35,6 +38,7 @@ public class Services : MonoBehaviour
 
         #region GENERATED_INIT
         GetService<SO>().InitData(so_data);
+        GetService<SaveDataManager>().InitData(savedatamanager_data);
         GetService<UI_Manager>().InitData(ui_manager_data);
         #endregion
 

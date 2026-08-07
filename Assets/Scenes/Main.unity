@@ -386,6 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Services
   so_data:
     env: {fileID: 11400000, guid: 4eeedfdf969b5294e9e58dc33fda168f, type: 2}
+    saveDataKeys: {fileID: 11400000, guid: 7cc2e514655f5484b856534d8c0b1c32, type: 2}
   ui_manager_data:
     allMenus:
     - type: 0

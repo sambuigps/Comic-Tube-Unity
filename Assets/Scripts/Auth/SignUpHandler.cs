@@ -40,7 +40,15 @@ public static class SignUpHandler
             SO.env.SignupEndpoint,
             "POST",
             body,
-            callback
+            (response) =>
+            {
+                if (response.success)
+                {
+                    Services.Save.SetRefreshToken(response.data.refreshToken);
+                    Services.Save.SetAccessToken(response.data.accessToken);
+                }
+                callback?.Invoke(response);
+            }
         );
     }
 }

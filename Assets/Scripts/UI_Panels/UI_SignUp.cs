@@ -1,7 +1,6 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class UI_SignUp : UI_BaseClass
@@ -20,10 +19,9 @@ public class UI_SignUp : UI_BaseClass
 
     private void OnEnable()
     {
-        signUpButton.onClick.AddListener(() => 
+        signUpButton.onClick.AddListener(() =>
             StartCoroutine(SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, (response) =>
             {
-                Debug.Log(response.data.user.username);
             })
         ));
     }
