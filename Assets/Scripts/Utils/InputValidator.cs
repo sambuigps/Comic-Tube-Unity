@@ -12,6 +12,8 @@ public class InputValidator : MonoBehaviour
         Email
     }
 
+    private bool allowUnderscores;
+
     [Header("References")]
     [SerializeField] TMP_InputField inputField;
 
@@ -77,12 +79,15 @@ public class InputValidator : MonoBehaviour
     bool forceUppercase = true,
     bool restrictLength = true,
     int maxLength = 12,
+    bool allowUndercores = false,
     bool insertSeparator = false,
     char separatorChar = '-',
     int separatorInterval = 4)
     {
         if (this.inputField != null)
             this.inputField.onValueChanged.RemoveListener(OnValueChanged);
+
+        this.allowUnderscores = allowUndercores;
 
         this.inputField = inputField;
 
@@ -235,7 +240,8 @@ public class InputValidator : MonoBehaviour
 
         foreach (char c in value)
         {
-            if (!char.IsLetterOrDigit(c))
+            if (!char.IsLetterOrDigit(c) &&
+            !(allowUnderscores && (c == '_' || c == '-')))
                 continue;
 
             char finalChar = forceUppercase ? char.ToUpper(c) : c;

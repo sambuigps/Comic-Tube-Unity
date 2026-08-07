@@ -7,8 +7,16 @@ public class envSO : ScriptableObject
     public string apiBaseUrl;
 
     [Header("AuthEndpoints")]
-    public string authEndpoint;
-    public string loginEndpoint;
-    public string signupEndpoint;
-    public string logoutEndpoint;
+    [SerializeField] string authEndpoint;
+    [SerializeField] string loginEndpoint;
+    [SerializeField] string signupEndpoint;
+    [SerializeField] string logoutEndpoint;
+
+    public string LoginEndpoint => apiBaseUrl + authEndpoint + loginEndpoint;
+    public string SignupEndpoint => apiBaseUrl + authEndpoint + signupEndpoint;
+    public string LogoutEndpoint => apiBaseUrl + authEndpoint + logoutEndpoint;
+
+    [Header("constants")]
+    public string platformType;
+
 }
