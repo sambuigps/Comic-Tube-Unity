@@ -20,7 +20,12 @@ public class UI_SignUp : UI_BaseClass
 
     private void OnEnable()
     {
-        signUpButton.onClick.AddListener(() => StartCoroutine(SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text)));
+        signUpButton.onClick.AddListener(() => 
+            StartCoroutine(SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, (response) =>
+            {
+                Debug.Log(response.data.user.username);
+            })
+        ));
     }
 
     private void OnDisable()

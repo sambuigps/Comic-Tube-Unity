@@ -1,17 +1,19 @@
+using System;
 using System.Collections;
 using System.Text;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
 [System.Serializable]
-public class SignUpData
+public class SignUpRequest
 {
     public string platformType;
     public string username;
     public string email;
     public string password;
 
-    public SignUpData(string email, string username, string password = "")
+    public SignUpRequest(string email, string username, string password = "")
     {
         this.email = email;
         this.password = password;
@@ -20,29 +22,25 @@ public class SignUpData
     }
 }
 
+[System.Serializable]
+public class SignUpResponse
+{
+    public User user;
+    public string accessToken;
+    public string refreshToken;
+}
+
 public static class SignUpHandler
 {
-    public static IEnumerator Signup(string email, string username, string pass)
+    public static IEnumerator Signup(string email, string username, string password, Action<ApiResponse<SignUpResponse>> callback)
     {
-        SignUpData body = new SignUpData(email, username, pass);
+        var body = new SignUpRequest(email, username, password);
 
-        string json = JsonUtility.ToJson(body);
-        byte[] data = Encoding.UTF8.GetBytes(json);
-
-        UnityWebRequest request = new UnityWebRequest(SO.env.SignupEndpoint, "POST");
-        request.uploadHandler = new UploadHandlerRaw(data);
-        request.downloadHandler = new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-
-        yield return request.SendWebRequest();
-
-        if (request.result == UnityWebRequest.Result.Success)
-        {
-            Debug.Log(request.downloadHandler.text);
-        }
-        else
-        {
-            Debug.LogError(request.error);
-        }
+        yield return ApiHandler.Send<SignUpRequest, SignUpResponse>(
+            SO.env.SignupEndpoint,
+            "POST",
+            body,
+            callback
+        );
     }
 }
