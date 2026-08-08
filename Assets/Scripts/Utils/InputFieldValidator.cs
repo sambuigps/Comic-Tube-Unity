@@ -2,6 +2,14 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
+public enum ForceInput
+{
+    Uppercase,
+    Lowercase,
+    None
+}
+
+[RequireComponent(typeof(TMP_InputField))]
 public class InputFieldValidator : MonoBehaviour
 {
     public enum InputType
@@ -15,7 +23,7 @@ public class InputFieldValidator : MonoBehaviour
     private bool allowUnderscores;
 
     [Header("References")]
-    [SerializeField] TMP_InputField inputField;
+    TMP_InputField inputField;
 
     [Header("Input")]
     [SerializeField] InputType inputType = InputType.Alphanumeric;
@@ -30,136 +38,61 @@ public class InputFieldValidator : MonoBehaviour
     [SerializeField] int maxValue = 9999;
 
     [Header("Formatting")]
-    [SerializeField] bool forceUppercase = true;
-    [SerializeField] bool insertSeparator = false;
-    [SerializeField] char separatorChar = '-';
-    [SerializeField] int separatorInterval = 4;
+    [SerializeField] ForceInput forceInput = ForceInput.None;
 
     private bool updating;
 
-    private void OnEnable()
+    private void Awake()
     {
-        if (inputField != null)
-            inputField.onValueChanged.AddListener(OnValueChanged);
-    }
-
-    private void OnDisable()
-    {
-        if (inputField != null)
-            inputField.onValueChanged.RemoveListener(OnValueChanged);
+        inputField = GetComponent<TMP_InputField>();
+        inputField.onValueChanged.AddListener(OnValueChanged);
     }
 
     #region inits
-    public void typeNumeric(
-    TMP_InputField inputField,
+    public void ConfigureNumeric(
     bool clampValue = false,
     int minValue = 0,
     int maxValue = 9999)
     {
-        if (this.inputField != null)
-            this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-
-        this.inputField = inputField;
-
-        this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-        this.inputField.onValueChanged.AddListener(OnValueChanged);
-
         inputType = InputType.Numeric;
 
         this.clampValue = clampValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
-
-        forceUppercase = false;
-        insertSeparator = false;
     }
 
-    public void typeAlphanumeric(
-    TMP_InputField inputField,
-    bool forceUppercase = true,
-    bool restrictLength = true,
+    public void ConfigureAlphanumeric(
+    ForceInput forceInput,
+    bool restrictLength = false,
     int maxLength = 12,
-    bool allowUndercores = false,
-    bool insertSeparator = false,
-    char separatorChar = '-',
-    int separatorInterval = 4)
+    bool allowUndercores = false)
     {
-        if (this.inputField != null)
-            this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-
         this.allowUnderscores = allowUndercores;
-
-        this.inputField = inputField;
-
-        this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-        this.inputField.onValueChanged.AddListener(OnValueChanged);
 
         inputType = InputType.Alphanumeric;
 
-        this.forceUppercase = forceUppercase;
+        this.forceInput = forceInput;
 
         this.restrictLength = restrictLength;
         this.maxLength = maxLength;
-
-        this.insertSeparator = insertSeparator;
-        this.separatorChar = separatorChar;
-        this.separatorInterval = separatorInterval;
-
-        clampValue = false;
     }
 
-    public void typeEmail(
-    TMP_InputField inputField,
-    bool restrictLength = true,
-    int maxLength  = 50)
+    public void ConfigureEmail()
     {
-        if (this.inputField != null)
-            this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-
-        this.inputField = inputField;
-
-        this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-        this.inputField.onValueChanged.AddListener(OnValueChanged);
-
         inputType = InputType.Email;
-
-        this.restrictLength = restrictLength;
-        this.maxLength = maxLength;
-
-        forceUppercase = false;
-        insertSeparator = false;
-        clampValue = false;
     }
 
-    public void typeAll(
-    TMP_InputField inputField,
-    bool forceUppercase = false,
-    bool restrictLength = true,
-    int maxLength = 12,
-    bool insertSeparator = false,
-    char separatorChar = '-',
-    int separatorInterval = 4)
+    public void ConfigureAll(
+    ForceInput forceInput,
+    bool restrictLength = false,
+    int maxLength = 12)
     {
-        if (this.inputField != null)
-            this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-
-        this.inputField = inputField;
-
-        this.inputField.onValueChanged.RemoveListener(OnValueChanged);
-        this.inputField.onValueChanged.AddListener(OnValueChanged);
-
         inputType = InputType.All;
 
-        this.forceUppercase = forceUppercase;
+        this.forceInput = forceInput;
 
         this.restrictLength = restrictLength;
         this.maxLength = maxLength;
-
-        this.insertSeparator = insertSeparator;
-        this.separatorChar = separatorChar;
-        this.separatorInterval = separatorInterval;
-
-        clampValue = false;
     }
     #endregion
 
@@ -169,24 +102,66 @@ public class InputFieldValidator : MonoBehaviour
 
         updating = true;
 
+        int oldCaretPosition = inputField.caretPosition;
+
+        string preprocessed = Preprocess(value);
+
         string result = inputType switch
         {
-            InputType.Numeric => ProcessNumeric(value),
-            InputType.Alphanumeric => ProcessAlphanumeric(value),
-            InputType.Email => ProcessEmail(value),
-            InputType.All => ProcessAll(value),
-            _ => ProcessAll(value)
+            InputType.Numeric => ProcessNumeric(preprocessed),
+            InputType.Alphanumeric => ProcessAlphanumeric(preprocessed),
+            InputType.Email => ProcessEmail(preprocessed),
+            InputType.All => ProcessAll(preprocessed),
+            _ => ProcessAll(preprocessed)
         };
 
         if (result != value)
         {
+            string beforeCaret = value[..Mathf.Min(oldCaretPosition, value.Length)];
+
+            string processedBeforeCaret = inputType switch
+            {
+                InputType.Numeric => ProcessNumeric(Preprocess(beforeCaret)),
+                InputType.Alphanumeric => ProcessAlphanumeric(Preprocess(beforeCaret)),
+                InputType.Email => ProcessEmail(Preprocess(beforeCaret)),
+                InputType.All => ProcessAll(Preprocess(beforeCaret)),
+                _ => ProcessAll(Preprocess(beforeCaret))
+            };
+
+            int newCaretPosition = Mathf.Min(
+                processedBeforeCaret.Length,
+                result.Length
+            );
+
             inputField.SetTextWithoutNotify(result);
 
-            Canvas.ForceUpdateCanvases();
-            inputField.MoveTextEnd(false);
+            inputField.caretPosition = newCaretPosition;
+            inputField.selectionAnchorPosition = newCaretPosition;
+            inputField.selectionFocusPosition = newCaretPosition;
         }
 
         updating = false;
+    }
+
+    private static bool IsAllowedCharacter(char c)
+    {
+        return char.IsUpper(c) ||
+           char.IsLower(c) ||
+           char.IsDigit(c) ||
+           "!@#$%^&*(),.?\":{}|<>_-+=/\\[];'`~".Contains(c);
+    }
+
+    private static string Preprocess(string value)
+    {
+        StringBuilder sb = new(value.Length);
+
+        foreach (char c in value)
+        {
+            if (IsAllowedCharacter(c))
+                sb.Append(c);
+        }
+
+        return sb.ToString();
     }
 
     private string ProcessAll(string value)
@@ -195,7 +170,10 @@ public class InputFieldValidator : MonoBehaviour
 
         foreach (char c in value)
         {
-            char finalChar = forceUppercase ? char.ToUpper(c) : c;
+            char finalChar;
+            if (forceInput == ForceInput.Uppercase) finalChar = char.ToUpper(c);
+            else if (forceInput == ForceInput.Lowercase) finalChar = char.ToLower(c);
+            else finalChar = c;
 
             sb.Append(finalChar);
 
@@ -203,7 +181,7 @@ public class InputFieldValidator : MonoBehaviour
                 break;
         }
 
-        return ApplySeparator(sb.ToString());
+        return sb.ToString();
     }
 
     private string ProcessEmail(string value)
@@ -219,16 +197,13 @@ public class InputFieldValidator : MonoBehaviour
                 c == '-' ||
                 c == '+')
             {
-                sb.Append(c);
+                sb.Append(char.ToLowerInvariant(c));
             }
             else if (c == '@' && !hasAt)
             {
                 hasAt = true;
                 sb.Append(c);
             }
-
-            if (restrictLength && sb.Length >= maxLength)
-                break;
         }
 
         return sb.ToString();
@@ -244,7 +219,10 @@ public class InputFieldValidator : MonoBehaviour
             !(allowUnderscores && (c == '_' || c == '-')))
                 continue;
 
-            char finalChar = forceUppercase ? char.ToUpper(c) : c;
+            char finalChar;
+            if (forceInput == ForceInput.Uppercase) finalChar = char.ToUpper(c);
+            else if (forceInput == ForceInput.Lowercase) finalChar = char.ToLower(c);
+            else finalChar = c;
 
             sb.Append(finalChar);
 
@@ -252,7 +230,7 @@ public class InputFieldValidator : MonoBehaviour
                 break;
         }
 
-        return ApplySeparator(sb.ToString());
+        return sb.ToString();
     }
 
     private string ProcessNumeric(string value)
@@ -265,9 +243,6 @@ public class InputFieldValidator : MonoBehaviour
                 continue;
 
             sb.Append(c);
-
-            if (restrictLength && sb.Length >= maxLength)
-                break;
         }
 
         string result = sb.ToString();
@@ -279,23 +254,5 @@ public class InputFieldValidator : MonoBehaviour
         }
 
         return result;
-    }
-
-    private string ApplySeparator(string value)
-    {
-        if (!insertSeparator || separatorInterval <= 0)
-            return value;
-
-        StringBuilder sb = new();
-
-        for (int i = 0; i < value.Length; i++)
-        {
-            if (i > 0 && i % separatorInterval == 0)
-                sb.Append(separatorChar);
-
-            sb.Append(value[i]);
-        }
-
-        return sb.ToString();
     }
 }

@@ -12,9 +12,9 @@ public class UI_SignUp : UI_BaseClass
 
     private void Awake()
     {
-        emailField.AddComponent<InputFieldValidator>().typeEmail(emailField, true, 20);
-        usernameField.AddComponent<InputFieldValidator>().typeAlphanumeric(usernameField, false, true, 20, true);
-        passwordField.AddComponent<InputFieldValidator>().typeAll(passwordField, false, true, 20);
+        emailField.AddComponent<InputFieldValidator>().ConfigureEmail();
+        usernameField.AddComponent<InputFieldValidator>().ConfigureAlphanumeric(ForceInput.Lowercase, true, 20, true);
+        passwordField.AddComponent<InputFieldValidator>().ConfigureAll(ForceInput.None, true, 20);
     }
 
     private void OnEnable()

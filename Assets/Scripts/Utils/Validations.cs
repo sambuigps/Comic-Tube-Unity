@@ -32,7 +32,7 @@ public static class Validations
     public static bool IsValidPassword(string password)
     {
         if (string.IsNullOrEmpty(password)) return false;
-        if (password.Length < 8) return false;
+        if (password.Length < 8 || password.Length > 20) return false;
         bool hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
         foreach (char c in password)
         {

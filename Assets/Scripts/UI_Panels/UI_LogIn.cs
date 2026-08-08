@@ -11,8 +11,8 @@ public class UI_LogIn : UI_BaseClass
 
     private void Awake()
     {
-        emailOrUsernameField.AddComponent<InputFieldValidator>().typeAll(emailOrUsernameField, false, true, 20);
-        passwordField.AddComponent<InputFieldValidator>().typeAll(passwordField, false, true, 20);
+        emailOrUsernameField.AddComponent<InputFieldValidator>().ConfigureAll(ForceInput.Lowercase);
+        passwordField.AddComponent<InputFieldValidator>().ConfigureAll(ForceInput.None, true, 20);
     }
 
     private void OnEnable()
