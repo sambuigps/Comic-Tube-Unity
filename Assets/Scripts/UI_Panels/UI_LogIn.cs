@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_SignIn : UI_BaseClass
+public class UI_LogIn : UI_BaseClass
 {
     [SerializeField] TMP_InputField emailField;
     [SerializeField] TMP_InputField passwordField;
@@ -11,7 +11,7 @@ public class UI_SignIn : UI_BaseClass
 
     private void Awake()
     {
-        emailField.AddComponent<InputValidator>().typeEmail(emailField, true, 50);
-        passwordField.AddComponent<InputValidator>().typeAll(passwordField, false, true, 20);
+        emailField.AddComponent<InputFieldValidator>().typeEmail(emailField, true, 50);
+        passwordField.AddComponent<InputFieldValidator>().typeAll(passwordField, false, true, 20);
     }
 }

@@ -1,9 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
-using Newtonsoft.Json;
-using UnityEngine;
-using UnityEngine.Networking;
 
 [System.Serializable]
 public class SignUpRequest

@@ -2,7 +2,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-public class InputValidator : MonoBehaviour
+public class InputFieldValidator : MonoBehaviour
 {
     public enum InputType
     {
