@@ -7,7 +7,16 @@ using UnityEngine.Networking;
 
 public static class ApiHandler
 {
-    public static IEnumerator Send<TRequest, TResponse>(
+    public static void Send<TRequest, TResponse>(
+        string url,
+        string method,
+        TRequest body,
+        Action<ApiResponse<TResponse>> callback)
+    {
+        Services.Instance.StartCoroutine(SendRoutine(url, method, body, callback));
+    }
+
+    public static IEnumerator SendRoutine<TRequest, TResponse>(
         string url,
         string method,
         TRequest body,

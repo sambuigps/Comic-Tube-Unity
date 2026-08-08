@@ -28,11 +28,11 @@ public class SignUpResponse
 
 public static class SignUpHandler
 {
-    public static IEnumerator Signup(string email, string username, string password, Action<ApiResponse<SignUpResponse>> callback)
+    public static void Signup(string email, string username, string password, Action<ApiResponse<SignUpResponse>> callback)
     {
         var body = new SignUpRequest(email, username, password);
 
-        yield return ApiHandler.Send<SignUpRequest, SignUpResponse>(
+        ApiHandler.Send<SignUpRequest, SignUpResponse>(
             SO.env.SignupEndpoint,
             "POST",
             body,

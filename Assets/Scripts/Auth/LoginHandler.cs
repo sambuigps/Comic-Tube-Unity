@@ -25,11 +25,11 @@ public class LoginResponse
 
 public static class LoginHandler
 {
-    public static IEnumerator Login(string emailOrUsername, string password, Action<ApiResponse<LoginResponse>> callback)
+    public static void Login(string emailOrUsername, string password, Action<ApiResponse<LoginResponse>> callback)
     {
         var body = new LoginRequest(emailOrUsername, password);
 
-        yield return ApiHandler.Send<LoginRequest, LoginResponse>(
+        ApiHandler.Send<LoginRequest, LoginResponse>(
             SO.env.LoginEndpoint,
             "POST",
             body,

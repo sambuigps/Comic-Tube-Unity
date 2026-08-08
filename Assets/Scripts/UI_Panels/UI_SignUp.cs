@@ -44,7 +44,7 @@ public class UI_SignUp : UI_BaseClass
             Debug.LogWarning("Password should be 8 to 20 characters long");
             return;
         }
-        StartCoroutine(SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, OnSignUpResponse));
+        SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, OnSignUpResponse);
     }
 
     private void OnSignUpResponse(ApiResponse<SignUpResponse> response)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Services : MonoBehaviour
 {
-    private static Services Instance;
+    public static Services Instance;
     private static Transform _transform;
     public static Transform Transform => _transform;
 
