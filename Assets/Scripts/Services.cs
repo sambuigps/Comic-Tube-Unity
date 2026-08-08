@@ -13,9 +13,11 @@ public class Services : MonoBehaviour
     [SerializeField] SO_Data so_data;
     [SerializeField] SaveDataManager_Data savedatamanager_data;
     [SerializeField] UI_Manager_Data ui_manager_data;
+    [SerializeField] SessionManager_Data sessionmanager_data;
     public static SO SO => GetService<SO>();
     public static SaveDataManager Save => GetService<SaveDataManager>();
     public static UI_Manager UI => GetService<UI_Manager>();
+    public static SessionManager Session => GetService<SessionManager>();
     #endregion
 
     private static Dictionary<Type, IService> services = new Dictionary<Type, IService>()
@@ -24,6 +26,7 @@ public class Services : MonoBehaviour
         { typeof(SO), new SO() },
         { typeof(SaveDataManager), new SaveDataManager() },
         { typeof(UI_Manager), new UI_Manager() },
+        { typeof(SessionManager), new SessionManager() },
         #endregion
     };
     private void Awake()
@@ -40,6 +43,7 @@ public class Services : MonoBehaviour
         GetService<SO>().InitData(so_data);
         GetService<SaveDataManager>().InitData(savedatamanager_data);
         GetService<UI_Manager>().InitData(ui_manager_data);
+        GetService<SessionManager>().InitData(sessionmanager_data);
         #endregion
 
         foreach (var service in services)

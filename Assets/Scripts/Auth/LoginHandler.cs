@@ -37,8 +37,7 @@ public static class LoginHandler
             {
                 if (response.success)
                 {
-                    Services.Save.SetRefreshToken(response.data.refreshToken);
-                    Services.Save.SetAccessToken(response.data.accessToken);
+                    Services.Session.CacheUser(response.data.user, response.data.accessToken, response.data.refreshToken);
                 }
                 callback?.Invoke(response);
             }

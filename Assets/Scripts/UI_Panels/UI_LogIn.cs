@@ -8,6 +8,7 @@ public class UI_LogIn : UI_BaseClass
     [SerializeField] TMP_InputField emailOrUsernameField;
     [SerializeField] TMP_InputField passwordField;
     [SerializeField] Button logInButton;
+    [SerializeField] Button goToSignUpButton;
 
     private void Awake()
     {
@@ -18,6 +19,7 @@ public class UI_LogIn : UI_BaseClass
     private void OnEnable()
     {
         logInButton.onClick.AddListener(OnLogInButton);
+        goToSignUpButton.onClick.AddListener(() => Services.UI.SetUI(UI_Type.SignUp));
     }
 
     private void OnDisable()
@@ -50,6 +52,7 @@ public class UI_LogIn : UI_BaseClass
         else
         {
             Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
+            Services.UI.SetUI(UI_Type.LogOut);
         }
     }
 }

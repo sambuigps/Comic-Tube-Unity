@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,16 +12,18 @@ public static class ApiHandler
         string url,
         string method,
         TRequest body,
-        Action<ApiResponse<TResponse>> callback)
+        Action<ApiResponse<TResponse>> callback,
+        Dictionary<string, string> headers = null)
     {
-        Services.Instance.StartCoroutine(SendRoutine(url, method, body, callback));
+        Services.Instance.StartCoroutine(SendRoutine(url, method, body, callback, headers));
     }
 
     public static IEnumerator SendRoutine<TRequest, TResponse>(
         string url,
         string method,
         TRequest body,
-        Action<ApiResponse<TResponse>> callback)
+        Action<ApiResponse<TResponse>> callback,
+        Dictionary<string, string> headers = null)
     {
         var request = new UnityWebRequest(url, method);
 
@@ -31,6 +34,11 @@ public static class ApiHandler
                 new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
 
             request.SetRequestHeader("Content-Type", "application/json");
+        }
+
+        if (headers != null)
+        {
+            foreach (var kvp in headers) request.SetRequestHeader(kvp.Key, kvp.Value);
         }
 
         request.downloadHandler = new DownloadHandlerBuffer();
