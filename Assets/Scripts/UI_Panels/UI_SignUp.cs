@@ -19,15 +19,36 @@ public class UI_SignUp : UI_BaseClass
 
     private void OnEnable()
     {
-        signUpButton.onClick.AddListener(() =>
-            StartCoroutine(SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, (response) =>
-            {
-            })
-        ));
+        signUpButton.onClick.AddListener(OnSignUpButton);
     }
 
     private void OnDisable()
     {
         signUpButton.onClick.RemoveAllListeners();
+    }
+
+    private void OnSignUpButton()
+    {
+        if (!Validations.IsValidEmail(emailField.text)) 
+        {
+            Debug.LogWarning("Invalid email");
+            return;
+        }
+        if (!Validations.IsValidUsername(usernameField.text))
+        {
+            Debug.LogWarning("Username should be 3 to 20 characters long");
+            return;
+        }
+        if (!Validations.IsValidPassword(passwordField.text))
+        {
+            Debug.LogWarning("Password should be 8 to 20 characters long");
+            return;
+        }
+        StartCoroutine(SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, OnSignUpResponse));
+    }
+
+    private void OnSignUpResponse(ApiResponse<SignUpResponse> response)
+    {
+
     }
 }
