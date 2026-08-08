@@ -42,6 +42,14 @@ public class UI_LogIn : UI_BaseClass
 
     private void OnLogInResponse(ApiResponse<LoginResponse> response)
     {
-        Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
+        if (!response.success)
+        {
+            Debug.LogWarning(response.message);
+            return;
+        }
+        else
+        {
+            Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
+        }
     }
 }

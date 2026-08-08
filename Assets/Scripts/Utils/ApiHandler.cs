@@ -39,15 +39,38 @@ public static class ApiHandler
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            Debug.LogError($"{request.responseCode}: {request.error}");
-            callback?.Invoke(null);
+            var result = new ApiResponse<TResponse>();
+            result.success = false;
+
+            if (request.result == UnityWebRequest.Result.ConnectionError)
+            {
+                // request never reached the server
+                Debug.LogError($"{request.responseCode}: {request.error}");
+                result.errorType = ApiErrorType.Network;
+                result.message = "Something went wrong!";
+            }
+            else // request reached the server
+            {
+                result.errorType = ApiErrorType.Api;
+                try
+                {
+                    var errorResponse = JsonConvert.DeserializeObject<ApiResponse<TResponse>>(request.downloadHandler.text);
+                    result.message = errorResponse.message;
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to parse error body: {e.Message}\n{request.downloadHandler.text}");
+                    result.message = "Something went wrong!";
+                }
+            }
+
+            callback?.Invoke(result);
+            request.Dispose();
             yield break;
         }
 
         var response = JsonConvert.DeserializeObject<ApiResponse<TResponse>>(request.downloadHandler.text);
-
-        callback?.Invoke(response);
-
+        callback?.Invoke(new ApiResponse<TResponse> { success = true, data = response.data, message = response.message });
         request.Dispose();
     }
 }

@@ -49,6 +49,14 @@ public class UI_SignUp : UI_BaseClass
 
     private void OnSignUpResponse(ApiResponse<SignUpResponse> response)
     {
-
+        if (!response.success)
+        {
+            Debug.LogWarning(response.message);
+            return;
+        }
+        else
+        {
+            Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
+        }
     }
 }

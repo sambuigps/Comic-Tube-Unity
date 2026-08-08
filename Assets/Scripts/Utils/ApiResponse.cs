@@ -1,8 +1,14 @@
-[System.Serializable]
+public enum ApiErrorType
+{
+    None,
+    Network,
+    Api
+}
+
 public class ApiResponse<T>
 {
-    public int statusCode;
-    public T data;
-    public string message;
     public bool success;
+    public T data;
+    public ApiErrorType errorType;
+    public string message; 
 }
