@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 #region structs
 
@@ -47,7 +48,10 @@ public class UI_Manager : BaseService<UI_Manager_Data>
 
     public override void Start()
     {
-        SetUI(UI_Type.SignUp);
+        AuthChecker.Check((isLoggedIn) =>
+        {
+            SetUI(isLoggedIn?UI_Type.LogOut:UI_Type.SignUp);
+        });
     }
 
     public void Disable()

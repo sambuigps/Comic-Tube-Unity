@@ -395,7 +395,20 @@ MonoBehaviour:
       reference: {fileID: 2754489199822172522}
     - type: 2
       reference: {fileID: 2754489199822172523}
+    - type: 3
+      reference: {fileID: 955225493}
     parent: {fileID: 375751759}
+--- !u!114 &955225493 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6613611346422773389, guid: 46791d8ff853cae4481191389a4b6821, type: 3}
+  m_PrefabInstance: {fileID: 2754489199822172521}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56ab31fd50ccb5d42877e4b4f863e330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_LogOut
 --- !u!1001 &2754489199822172521
 PrefabInstance:
   m_ObjectHideFlags: 0
