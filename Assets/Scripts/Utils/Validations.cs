@@ -36,11 +36,11 @@ public static class Validations
         bool hasUpper = false, hasLower = false, hasDigit = false, hasSpecial = false;
         foreach (char c in password)
         {
-            if (c > 127) return false; // no unicodes
             if (char.IsUpper(c)) hasUpper = true;
             else if (char.IsLower(c)) hasLower = true;
             else if (char.IsDigit(c)) hasDigit = true;
-            else hasSpecial = true;
+            else if ("!@#$%^&*(),.?\":{}|<>".Contains(c)) hasSpecial = true;
+            else return false;
         }
         return hasUpper && hasLower && hasDigit && hasSpecial;
     }

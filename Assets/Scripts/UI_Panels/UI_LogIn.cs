@@ -5,13 +5,28 @@ using UnityEngine.UI;
 
 public class UI_LogIn : UI_BaseClass
 {
-    [SerializeField] TMP_InputField emailField;
+    [SerializeField] TMP_InputField emailOrUsernameField;
     [SerializeField] TMP_InputField passwordField;
-    [SerializeField] Button signInButton;
+    [SerializeField] Button logInButton;
 
     private void Awake()
     {
-        emailField.AddComponent<InputFieldValidator>().typeEmail(emailField, true, 50);
+        emailOrUsernameField.AddComponent<InputFieldValidator>().typeAll(emailOrUsernameField, false, true, 20);
         passwordField.AddComponent<InputFieldValidator>().typeAll(passwordField, false, true, 20);
+    }
+
+    private void OnEnable()
+    {
+        logInButton.onClick.AddListener(() =>
+            StartCoroutine(LoginHandler.Login(emailOrUsernameField.text, passwordField.text, (response) =>
+            {
+                Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
+            })
+        ));
+    }
+
+    private void OnDisable()
+    {
+        logInButton.onClick.RemoveAllListeners();
     }
 }
