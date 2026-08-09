@@ -10,6 +10,7 @@ public class UI_SignUp : UI_BaseClass
     [SerializeField] TMP_InputField passwordField;
     [SerializeField] Button signUpButton;
     [SerializeField] Button goToLogInButton;
+    public bool isInProgress = false;
 
     private void Awake()
     {
@@ -31,19 +32,28 @@ public class UI_SignUp : UI_BaseClass
 
     private void OnSignUpButton()
     {
+        if (isInProgress)
+        {
+            Debug.LogWarning("Sign up is already in progress");
+            return;
+        }
+        isInProgress = true;
         if (!Validations.IsValidEmail(emailField.text)) 
         {
             Debug.LogWarning("Invalid email");
+            isInProgress = false;
             return;
         }
         if (!Validations.IsValidUsername(usernameField.text))
         {
             Debug.LogWarning("Username should be 3 to 20 characters long");
+            isInProgress = false;
             return;
         }
         if (!Validations.IsValidPassword(passwordField.text))
         {
             Debug.LogWarning("Password should be 8 to 20 characters long");
+            isInProgress = false;
             return;
         }
         SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, OnSignUpResponse);
@@ -51,6 +61,8 @@ public class UI_SignUp : UI_BaseClass
 
     private void OnSignUpResponse(ApiResponse<SignUpResponse> response)
     {
+        isInProgress = false;
+
         if (!response.success)
         {
             Debug.LogWarning(response.message);

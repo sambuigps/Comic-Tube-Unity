@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class UI_LogOut : UI_BaseClass
 {
     [SerializeField] Button logOutButton;
+    public bool isInProgress = false;
 
     private void OnEnable()
     {
@@ -17,11 +18,15 @@ public class UI_LogOut : UI_BaseClass
 
     private void OnLogOutButton()
     {
+        if (isInProgress) return;
+        isInProgress = true;
         LogOutHandler.LogOut(OnLogOutResponse);
     }
 
     private void OnLogOutResponse(ApiResponse<LogOutResponse> response)
     {
+        isInProgress = false;
+
         Debug.Log(response.message);
         Services.UI.SetUI(UI_Type.SignUp);
     }
