@@ -9,6 +9,7 @@ public class UI_LogIn : UI_BaseClass
     [SerializeField] TMP_InputField passwordField;
     [SerializeField] Button logInButton;
     [SerializeField] Button goToSignUpButton;
+    [SerializeField] Toggle showPass;
     public bool isInProgress = false;
 
     private void Awake()
@@ -21,11 +22,17 @@ public class UI_LogIn : UI_BaseClass
     {
         logInButton.onClick.AddListener(OnLogInButton);
         goToSignUpButton.onClick.AddListener(() => Services.UI.SetUI(UI_Type.SignUp));
+        showPass.onValueChanged.AddListener((isOn) =>
+        {
+            passwordField.contentType = isOn ? TMP_InputField.ContentType.Standard : TMP_InputField.ContentType.Password;
+            passwordField.ForceLabelUpdate();
+        });
     }
 
     private void OnDisable()
     {
         logInButton.onClick.RemoveAllListeners();
+        showPass.onValueChanged.RemoveAllListeners();
     }
 
     public override void Init()
@@ -33,6 +40,7 @@ public class UI_LogIn : UI_BaseClass
         base.Init();
         emailOrUsernameField.text = "";
         passwordField.text = "";
+        showPass.isOn = false;
     }
 
     private void OnLogInButton()
