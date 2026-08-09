@@ -28,6 +28,13 @@ public class UI_LogIn : UI_BaseClass
         logInButton.onClick.RemoveAllListeners();
     }
 
+    public override void Init()
+    {
+        base.Init();
+        emailOrUsernameField.text = "";
+        passwordField.text = "";
+    }
+
     private void OnLogInButton()
     {
         if (isInProgress)

@@ -30,6 +30,14 @@ public class UI_SignUp : UI_BaseClass
         signUpButton.onClick.RemoveAllListeners();
     }
 
+    public override void Init()
+    {
+        base.Init();
+        emailField.text = "";
+        usernameField.text = "";
+        passwordField.text = "";
+    }
+
     private void OnSignUpButton()
     {
         if (isInProgress)
