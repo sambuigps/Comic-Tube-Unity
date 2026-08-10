@@ -75,7 +75,7 @@ public class UI_SignUp : UI_BaseClass
         SignUpHandler.Signup(emailField.text, usernameField.text, passwordField.text, OnSignUpResponse);
     }
 
-    private void OnSignUpResponse(ApiResponse<SignUpResponse> response)
+    private void OnSignUpResponse(ApiResponse<object> response)
     {
         isInProgress = false;
 
@@ -86,8 +86,7 @@ public class UI_SignUp : UI_BaseClass
         }
         else
         {
-            Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
-            Services.UI.SetUI(UI_Type.LogOut);
+            Services.UI.SetUI(UI_Type.VerifyOtp);
         }
     }
 }

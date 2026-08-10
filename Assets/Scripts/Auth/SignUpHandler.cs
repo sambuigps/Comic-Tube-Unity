@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 
 [System.Serializable]
 public class SignUpRequest
@@ -18,21 +17,13 @@ public class SignUpRequest
     }
 }
 
-[System.Serializable]
-public class SignUpResponse
-{
-    public User user;
-    public string accessToken;
-    public string refreshToken;
-}
-
 public static class SignUpHandler
 {
-    public static void Signup(string email, string username, string password, Action<ApiResponse<SignUpResponse>> callback)
+    public static void Signup(string email, string username, string password, Action<ApiResponse<object>> callback)
     {
         var body = new SignUpRequest(email, username, password);
 
-        ApiHandler.Send<SignUpRequest, SignUpResponse>(
+        ApiHandler.Send<SignUpRequest, object>(
             SO.env.SignupEndpoint,
             "POST",
             body,
@@ -40,7 +31,7 @@ public static class SignUpHandler
             {
                 if (response.success)
                 {
-                    Services.Session.CacheUser(response.data.user, response.data.accessToken, response.data.refreshToken);
+                    Services.Session.unverifiedEmail = email;
                 }
                 callback?.Invoke(response);
             }

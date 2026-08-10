@@ -19,4 +19,6 @@ public class SessionManager : BaseService<SessionManager_Data>
         loggedInUser = null;
         Services.Save.ClearTokens();
     }
+
+    public string unverifiedEmail;
 }

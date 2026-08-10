@@ -13,12 +13,14 @@ public class envSO : ScriptableObject
     [SerializeField] string logoutEndpoint;
     [SerializeField] string getCurrUserEndpoint;
     [SerializeField] string refreshAccessTokenEndpoint;
+    [SerializeField] string verifyOtpEndpoint;
 
     public string LoginEndpoint => apiBaseUrl + authEndpoint + loginEndpoint;
     public string SignupEndpoint => apiBaseUrl + authEndpoint + signupEndpoint;
     public string LogoutEndpoint => apiBaseUrl + authEndpoint + logoutEndpoint;
     public string GetCurrUserEndpoint => apiBaseUrl + authEndpoint + getCurrUserEndpoint;
     public string RefreshAccessTokenEndpoint => apiBaseUrl + authEndpoint + refreshAccessTokenEndpoint;
+    public string VerifyOtpEndpoint => apiBaseUrl + authEndpoint + verifyOtpEndpoint;
 
     [Header("constants")]
     public string platformType;

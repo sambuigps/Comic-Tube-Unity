@@ -151,5 +151,6 @@ public enum UI_Type
     None,
     LogIn,
     SignUp,
+    VerifyOtp,
     LogOut
 }

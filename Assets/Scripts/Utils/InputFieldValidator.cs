@@ -32,11 +32,6 @@ public class InputFieldValidator : MonoBehaviour
     [SerializeField] bool restrictLength = true;
     [SerializeField] int maxLength = 12;
 
-    [Header("Numeric")]
-    [SerializeField] bool clampValue = false;
-    [SerializeField] int minValue = 0;
-    [SerializeField] int maxValue = 9999;
-
     [Header("Formatting")]
     [SerializeField] ForceInput forceInput = ForceInput.None;
 
@@ -50,15 +45,13 @@ public class InputFieldValidator : MonoBehaviour
 
     #region inits
     public void ConfigureNumeric(
-    bool clampValue = false,
-    int minValue = 0,
-    int maxValue = 9999)
+    bool restrictLength = false,
+    int maxLength = 6)
     {
         inputType = InputType.Numeric;
 
-        this.clampValue = clampValue;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        this.restrictLength = true;
+        this.maxLength = maxLength;
     }
 
     public void ConfigureAlphanumeric(
@@ -243,15 +236,12 @@ public class InputFieldValidator : MonoBehaviour
                 continue;
 
             sb.Append(c);
+
+            if (restrictLength && sb.Length >= maxLength)
+                break;
         }
 
         string result = sb.ToString();
-
-        if (clampValue && result.Length > 0 && int.TryParse(result, out int number))
-        {
-            number = Mathf.Clamp(number, minValue, maxValue);
-            result = number.ToString();
-        }
 
         return result;
     }
