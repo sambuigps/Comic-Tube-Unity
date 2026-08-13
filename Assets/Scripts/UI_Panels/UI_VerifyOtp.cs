@@ -7,6 +7,7 @@ public class UI_VerifyOtp : UI_BaseClass
 {
     [SerializeField] TMP_InputField otpField;
     [SerializeField] Button verifyButton;
+    [SerializeField] Button backButton;
     public bool isInProgress = false;
 
     private void Awake()
@@ -17,6 +18,13 @@ public class UI_VerifyOtp : UI_BaseClass
     private void OnEnable()
     {
         verifyButton.onClick.AddListener(OnVerifyButton);
+        backButton.onClick.AddListener(OnBackButton);
+    }
+
+    private void OnDisable()
+    {
+        verifyButton.onClick.RemoveAllListeners();
+        backButton.onClick.RemoveAllListeners();
     }
 
     private void OnVerifyButton()
@@ -49,5 +57,11 @@ public class UI_VerifyOtp : UI_BaseClass
             Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
             Services.UI.SetUI(UI_Type.LogOut);
         }
+    }
+
+    private void OnBackButton()
+    {
+        Services.UI.SetUI(UI_Type.LogIn);
+        Services.Session.unverifiedEmail = null;
     }
 }
