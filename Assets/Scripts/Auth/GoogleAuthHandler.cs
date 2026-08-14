@@ -5,19 +5,21 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Networking;
 
 public class GoogleAuthRequest
 {
     public string platformType;
-    public string idToken;
+    public string code;
+    public string codeVerifier;
+    public string redirectUri;
 
-    public GoogleAuthRequest(string idToken)
+    public GoogleAuthRequest(string code, string codeVerifier, string redirectUri)
     {
         platformType = SO.env.platformType;
-        this.idToken = idToken;
+        this.code = code;
+        this.codeVerifier = codeVerifier;
+        this.redirectUri = redirectUri;
     }
 }
 
@@ -47,7 +49,7 @@ public static class GoogleAuthHandler
         }
         catch (Exception e)
         {
-            OnBrowserExit(false, null, "Could not start local listener: " + e.Message);
+            OnGettingAuthCodeFromGoogle(false, "Could not start local listener: " + e.Message);
             return;
         }
 
@@ -70,17 +72,17 @@ public static class GoogleAuthHandler
 
         if (listenError != null)
         {
-            OnBrowserExit(false, null, listenError);
+            OnGettingAuthCodeFromGoogle(false, "Google sign-in was cancelled or failed.");
             return;
         }
 
         if (string.IsNullOrEmpty(code))
         {
-            OnBrowserExit(false, null, "Google sign-in was cancelled or failed.");
+            OnGettingAuthCodeFromGoogle(false, listenError);
             return;
         }
 
-        await ExchangeCodeForIdToken(code, verifier, redirectUri);
+        OnGettingAuthCodeFromGoogle(true, null, code, verifier, redirectUri);
     }
 
     private static (string code, string error) WaitForRedirect(HttpListener listener)
@@ -109,46 +111,6 @@ public static class GoogleAuthHandler
         }
     }
 
-    private static async Task ExchangeCodeForIdToken(string code, string verifier, string redirectUri)
-    {
-        WWWForm form = new WWWForm();
-        form.AddField("client_id", SO.env.GoogleClientId);
-        form.AddField("client_secret", SO.env.GoogleClientSecret);
-        form.AddField("code", code);
-        form.AddField("code_verifier", verifier);
-        form.AddField("grant_type", "authorization_code");
-        form.AddField("redirect_uri", redirectUri);
-
-        using UnityWebRequest req = UnityWebRequest.Post("https://oauth2.googleapis.com/token", form);
-        var op = req.SendWebRequest();
-        while (!op.isDone) await Task.Yield();
-
-        if (req.result != UnityWebRequest.Result.Success)
-        {
-            OnBrowserExit(false, null, "Token exchange failed: " + req.downloadHandler.text);
-            return;
-        }
-
-        TokenResponse token;
-        try
-        {
-            token = JsonUtility.FromJson<TokenResponse>(req.downloadHandler.text);
-        }
-        catch (Exception e)
-        {
-            OnBrowserExit(false, null, "Failed to parse token response: " + e.Message);
-            return;
-        }
-
-        if (string.IsNullOrEmpty(token.id_token))
-        {
-            OnBrowserExit(false, null, "No id_token in Google's response: " + req.downloadHandler.text);
-            return;
-        }
-
-        OnBrowserExit(true, token.id_token, null);
-    }
-
     private static int GetFreePort()
     {
         TcpListener l = new TcpListener(IPAddress.Loopback, 0);
@@ -175,25 +137,21 @@ public static class GoogleAuthHandler
     private static string Base64UrlEncode(byte[] input) =>
         Convert.ToBase64String(input).Replace('+', '-').Replace('/', '_').TrimEnd('=');
 
-    [Serializable]
-    private class TokenResponse
-    {
-        public string id_token;
-        public string access_token;
-    }
     #endregion
 
-    private static void OnBrowserExit(bool success, string idToken, string error)
+    private static void OnGettingAuthCodeFromGoogle(bool success, string error, 
+        string code = null, string codeVerifier = null, string redirectUri = null)
     {
         if (!success)
         {
             var response = new ApiResponse<AuthResponse>();
             response.success = false;
+            response.message = error;
             callback?.Invoke(response);
             return;
         }
 
-        var body = new GoogleAuthRequest(idToken);
+        var body = new GoogleAuthRequest(code, codeVerifier, redirectUri);
 
         ApiHandler.Send<GoogleAuthRequest, AuthResponse>(
             SO.env.GoogleAuthEndpoint,
