@@ -18,7 +18,7 @@ public static class ApiHandler
         Services.Instance.StartCoroutine(SendRoutine(url, method, body, callback, headers));
     }
 
-    public static IEnumerator SendRoutine<TRequest, TResponse>(
+    private static IEnumerator SendRoutine<TRequest, TResponse>(
         string url,
         string method,
         TRequest body,

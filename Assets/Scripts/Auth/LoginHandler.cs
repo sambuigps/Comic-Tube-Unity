@@ -16,7 +16,7 @@ public class LoginRequest
 }
 
 [System.Serializable]
-public class LoginResponse
+public class AuthResponse
 {
     public User user;
     public string accessToken;
@@ -25,11 +25,11 @@ public class LoginResponse
 
 public static class LoginHandler
 {
-    public static void Login(string emailOrUsername, string password, Action<ApiResponse<LoginResponse>> callback)
+    public static void Login(string emailOrUsername, string password, Action<ApiResponse<AuthResponse>> callback)
     {
         var body = new LoginRequest(emailOrUsername, password);
 
-        ApiHandler.Send<LoginRequest, LoginResponse>(
+        ApiHandler.Send<LoginRequest, AuthResponse>(
             SO.env.LoginEndpoint,
             "POST",
             body,

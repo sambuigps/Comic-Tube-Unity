@@ -15,21 +15,13 @@ public class VerifyOtpRequest
     }
 }
 
-[System.Serializable]
-public class VerifyOtpResponse
-{
-    public User user;
-    public string accessToken;
-    public string refreshToken;
-}
-
 public static class VerifyOtpHandler
 {
-    public static void VerifyOtp(string otp, Action<ApiResponse<VerifyOtpResponse>> callback)
+    public static void VerifyOtp(string otp, Action<ApiResponse<AuthResponse>> callback)
     {
         var body = new VerifyOtpRequest(Services.Session.unverifiedEmail, otp);
 
-        ApiHandler.Send<VerifyOtpRequest, VerifyOtpResponse >(
+        ApiHandler.Send<VerifyOtpRequest, AuthResponse >(
             SO.env.VerifyOtpEndpoint,
             "POST",
             body,

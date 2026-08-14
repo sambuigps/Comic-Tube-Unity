@@ -43,7 +43,7 @@ public class UI_VerifyOtp : UI_BaseClass
         VerifyOtpHandler.VerifyOtp(otpField.text, OnVerifyResponse);
     }
 
-    private void OnVerifyResponse(ApiResponse<VerifyOtpResponse> response)
+    private void OnVerifyResponse(ApiResponse<AuthResponse> response)
     {
         isInProgress = false;
 

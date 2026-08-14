@@ -18,6 +18,7 @@ public class UI_LogIn : UI_BaseClass
         passwordField.AddComponent<InputFieldValidator>().ConfigureAll(ForceInput.None, true, 20);
     }
 
+    #region add and remove listeners
     private void OnEnable()
     {
         logInButton.onClick.AddListener(OnLogInButton);
@@ -66,7 +67,7 @@ public class UI_LogIn : UI_BaseClass
         LoginHandler.Login(emailOrUsernameField.text, passwordField.text, OnLogInResponse);
     }
 
-    private void OnLogInResponse(ApiResponse<LoginResponse> response)
+    private void OnLogInResponse(ApiResponse<AuthResponse> response)
     {
         isInProgress = false;
 
