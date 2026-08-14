@@ -14,15 +14,40 @@ public class envSO : ScriptableObject
     [SerializeField] string getCurrUserEndpoint;
     [SerializeField] string refreshAccessTokenEndpoint;
     [SerializeField] string verifyOtpEndpoint;
+    [SerializeField] string googleAuthEndpoint;
 
-    public string LoginEndpoint => apiBaseUrl + authEndpoint + loginEndpoint;
-    public string SignupEndpoint => apiBaseUrl + authEndpoint + signupEndpoint;
-    public string LogoutEndpoint => apiBaseUrl + authEndpoint + logoutEndpoint;
-    public string GetCurrUserEndpoint => apiBaseUrl + authEndpoint + getCurrUserEndpoint;
-    public string RefreshAccessTokenEndpoint => apiBaseUrl + authEndpoint + refreshAccessTokenEndpoint;
-    public string VerifyOtpEndpoint => apiBaseUrl + authEndpoint + verifyOtpEndpoint;
+    #region full endpoint generators
+
+    private string AuthEndpoint => apiBaseUrl + authEndpoint;
+
+    public string LoginEndpoint => AuthEndpoint + loginEndpoint;
+    public string SignupEndpoint => AuthEndpoint + signupEndpoint;
+    public string LogoutEndpoint => AuthEndpoint + logoutEndpoint;
+    public string GetCurrUserEndpoint => AuthEndpoint + getCurrUserEndpoint;
+    public string RefreshAccessTokenEndpoint => AuthEndpoint + refreshAccessTokenEndpoint;
+    public string VerifyOtpEndpoint => AuthEndpoint + verifyOtpEndpoint;
+    public string GoogleAuthEndpoint => AuthEndpoint + googleAuthEndpoint;
+    #endregion
+
+    [Header("Auth IDs")]
+    [SerializeField] string googleClientId_Web;
+    [SerializeField] string googleClientSecret_Web;
+    [SerializeField] string googleClientId_App;
+    [SerializeField] string googleClientSecret_App;
+
+    public string GoogleClientId => platformType=="web" ? googleClientId_Web : googleClientId_App;
+    public string GoogleClientSecret => platformType == "web" ? googleClientSecret_Web : googleClientSecret_App;
 
     [Header("constants")]
-    public string platformType;
+    public string platformType => GetPlatformType();
+
+    string GetPlatformType()
+    {
+        #if UNITY_WEBGL
+        return "web";
+        #else
+        return "app";
+        #endif
+    }
 
 }
