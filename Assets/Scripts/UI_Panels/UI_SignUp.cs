@@ -20,6 +20,7 @@ public class UI_SignUp : UI_BaseClass
         passwordField.AddComponent<InputFieldValidator>().ConfigureAll(ForceInput.None, true, 20);
     }
 
+    #region add and remove listeners
     private void OnEnable()
     {
         signUpButton.onClick.AddListener(OnSignUpButton);
@@ -34,8 +35,10 @@ public class UI_SignUp : UI_BaseClass
     private void OnDisable()
     {
         signUpButton.onClick.RemoveAllListeners();
+        goToLogInButton.onClick.RemoveAllListeners();
         showPass.onValueChanged.RemoveAllListeners();
     }
+    #endregion
 
     public override void Init()
     {
@@ -46,6 +49,7 @@ public class UI_SignUp : UI_BaseClass
         showPass.isOn = false;
     }
 
+    #region signUp
     private void OnSignUpButton()
     {
         if (isInProgress)
@@ -89,4 +93,5 @@ public class UI_SignUp : UI_BaseClass
             Services.UI.SetUI(UI_Type.VerifyOtp);
         }
     }
+    #endregion
 }

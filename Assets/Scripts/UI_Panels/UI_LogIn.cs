@@ -34,7 +34,9 @@ public class UI_LogIn : UI_BaseClass
     {
         logInButton.onClick.RemoveAllListeners();
         showPass.onValueChanged.RemoveAllListeners();
+        goToSignUpButton.onClick.RemoveAllListeners();
     }
+    #endregion
 
     public override void Init()
     {
@@ -44,6 +46,7 @@ public class UI_LogIn : UI_BaseClass
         showPass.isOn = false;
     }
 
+    #region login
     private void OnLogInButton()
     {
         if (isInProgress)
@@ -82,4 +85,5 @@ public class UI_LogIn : UI_BaseClass
             Services.UI.SetUI(UI_Type.LogOut);
         }
     }
+    #endregion
 }
