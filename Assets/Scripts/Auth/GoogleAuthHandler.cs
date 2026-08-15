@@ -142,11 +142,11 @@ public static class GoogleAuthHandler
     private static void OnGettingAuthCodeFromGoogle(bool success, string error, 
         string code = null, string codeVerifier = null, string redirectUri = null)
     {
-        if (!success)
+        if (!success || Services.Session.loggedInUser != null)
         {
             var response = new ApiResponse<AuthResponse>();
             response.success = false;
-            response.message = error;
+            response.message = error!=null ? error : "User already signed in";
             callback?.Invoke(response);
             return;
         }
