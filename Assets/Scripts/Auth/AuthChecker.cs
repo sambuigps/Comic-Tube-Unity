@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 public class RefreshAccessTokenRequest
 {
@@ -28,7 +27,6 @@ public static class AuthChecker
             {
                 if (!refreshResult.success)
                 {
-                    Services.Session.ClearUser();
                     callback?.Invoke(false);
                     return;
                 }
@@ -39,11 +37,8 @@ public static class AuthChecker
                 // Retry once with the fresh token. If this also fails, give up.
                 FetchCurrUser(
                     onSuccess: () => callback?.Invoke(true),
-                    onFail: () =>
-                    {
-                        Services.Session.ClearUser();
-                        callback?.Invoke(false);
-                    });
+                    onFail: () => callback?.Invoke(false)
+                );
             });
         });
     }
@@ -56,11 +51,6 @@ public static class AuthChecker
             onFail?.Invoke();
             return;
         }
-
-        var headers = new Dictionary<string, string>
-        {
-            { "Authorization", $"Bearer {accessToken}" }
-        };
 
         ApiHandler.Send<object, User>(
             SO.env.GetCurrUserEndpoint,
@@ -77,8 +67,7 @@ public static class AuthChecker
                 {
                     onFail?.Invoke();
                 }
-            },
-            headers
+            }
         );
     }
 

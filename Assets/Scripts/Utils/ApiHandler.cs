@@ -41,14 +41,20 @@ public static class ApiHandler
             foreach (var kvp in headers) request.SetRequestHeader(kvp.Key, kvp.Value);
         }
 
+        // Send auth if available
+        var accessToken = Services.Save.GetAccessToken();
+        if(!string.IsNullOrEmpty(accessToken)) request.SetRequestHeader("Authorization", $"Bearer {accessToken}");
+
         request.downloadHandler = new DownloadHandlerBuffer();
 
         yield return request.SendWebRequest();
 
         if (request.result != UnityWebRequest.Result.Success)
         {
-            var result = new ApiResponse<TResponse>();
-            result.success = false;
+            var result = new ApiResponse<TResponse>{
+                success = false,
+                statusCode = request.responseCode
+            };
 
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
@@ -60,6 +66,12 @@ public static class ApiHandler
             else // request reached the server
             {
                 result.errorType = ApiErrorType.Api;
+                
+                if(request.responseCode == 401)
+                {
+                    Services.Session.ClearUser();
+                }
+
                 try
                 {
                     var errorResponse = JsonConvert.DeserializeObject<ApiResponse<TResponse>>(request.downloadHandler.text);

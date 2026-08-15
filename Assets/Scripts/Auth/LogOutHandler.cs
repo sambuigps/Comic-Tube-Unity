@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 [System.Serializable]
 public class LogOutRequest
@@ -32,11 +31,6 @@ public static class LogOutHandler
 
         var body = new LogOutRequest();
 
-        var headers = new Dictionary<string, string>
-        {
-            { "Authorization", $"Bearer {Services.Save.GetAccessToken()}" }
-        };
-
         ApiHandler.Send<LogOutRequest, LogOutResponse>(
             SO.env.LogoutEndpoint,
             "POST",
@@ -48,8 +42,7 @@ public static class LogOutHandler
                     Services.Session.ClearUser();
                 }
                 callback?.Invoke(response);
-            },
-            headers
+            }
         );
     }
 }
