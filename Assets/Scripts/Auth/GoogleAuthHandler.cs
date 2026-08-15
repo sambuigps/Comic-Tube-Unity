@@ -9,14 +9,12 @@ using UnityEngine;
 
 public class GoogleAuthRequest
 {
-    public string platformType;
     public string code;
     public string codeVerifier;
     public string redirectUri;
 
     public GoogleAuthRequest(string code, string codeVerifier, string redirectUri)
     {
-        platformType = SO.env.platformType;
         this.code = code;
         this.codeVerifier = codeVerifier;
         this.redirectUri = redirectUri;

@@ -23,7 +23,7 @@ public class UI_LogOut : UI_BaseClass
         LogOutHandler.LogOut(OnLogOutResponse);
     }
 
-    private void OnLogOutResponse(ApiResponse<LogOutResponse> response)
+    private void OnLogOutResponse(ApiResponse<object> response)
     {
         isInProgress = false;
 

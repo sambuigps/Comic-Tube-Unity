@@ -3,7 +3,6 @@ using System;
 [System.Serializable]
 public class VerifyOtpRequest
 {
-    public string platformType;
     public string email;
     public string otp;
 
@@ -11,7 +10,6 @@ public class VerifyOtpRequest
     {
         this.email = email;
         this.otp = otp;
-        platformType = SO.env.platformType;
     }
 }
 

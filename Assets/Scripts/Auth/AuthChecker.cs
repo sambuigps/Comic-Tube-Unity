@@ -2,11 +2,9 @@ using System;
 
 public class RefreshAccessTokenRequest
 {
-    public string platformType;
     public string refreshToken;
     public RefreshAccessTokenRequest()
     {
-        platformType = SO.env.platformType;
         refreshToken = Services.Save.GetRefreshToken();
     }
 }

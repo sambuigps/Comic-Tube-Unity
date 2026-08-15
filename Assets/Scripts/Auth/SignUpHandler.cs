@@ -3,7 +3,6 @@ using System;
 [System.Serializable]
 public class SignUpRequest
 {
-    public string platformType;
     public string username;
     public string email;
     public string password;
@@ -13,7 +12,6 @@ public class SignUpRequest
         this.email = email;
         this.password = password;
         this.username = username;
-        platformType = SO.env.platformType;
     }
 }
 

@@ -1,27 +1,12 @@
 using System;
 
-[System.Serializable]
-public class LogOutRequest
-{
-    public string platformType;
-    public LogOutRequest()
-    {
-        platformType = SO.env.platformType;
-    }
-}
-
-[System.Serializable]
-public class LogOutResponse
-{
-}
-
 public static class LogOutHandler
 {
-    public static void LogOut(Action<ApiResponse<LogOutResponse>> callback)
+    public static void LogOut(Action<ApiResponse<object>> callback)
     {
         if (Services.Session.loggedInUser == null)
         {
-            callback?.Invoke(new ApiResponse<LogOutResponse>
+            callback?.Invoke(new ApiResponse<object>
             {
                 success = false,
                 message = "No active session"
@@ -29,12 +14,10 @@ public static class LogOutHandler
             return;
         }
 
-        var body = new LogOutRequest();
-
-        ApiHandler.Send<LogOutRequest, LogOutResponse>(
+        ApiHandler.Send<object, object>(
             SO.env.LogoutEndpoint,
             "POST",
-            body,
+            null,
             (response) =>
             {
                 if (response.success)

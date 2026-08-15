@@ -1,17 +1,14 @@
 using System;
-using System.Collections;
 
 [System.Serializable]
 public class LoginRequest
 {
-    public string platformType;
     public string emailOrUsername;
     public string password;
     public LoginRequest(string emailOrUsername, string password)
     {
         this.emailOrUsername = emailOrUsername;
         this.password = password;
-        platformType = SO.env.platformType;
     }
 }
 

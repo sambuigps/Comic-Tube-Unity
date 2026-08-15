@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,7 +30,11 @@ public static class ApiHandler
 
         if (body != null)
         {
-            string json = JsonConvert.SerializeObject(body);
+            var jsonObject = JObject.FromObject(body);
+
+            jsonObject.Add("platformType", SO.env.platformType);
+
+            string json = jsonObject.ToString(Formatting.None);
             request.uploadHandler =
                 new UploadHandlerRaw(Encoding.UTF8.GetBytes(json));
 
