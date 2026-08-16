@@ -5,8 +5,13 @@ using UnityEngine.Networking;
 
 public static class UrlImageHandler
 {
-    public static void LoadImage(string url, Action<Sprite> callback)
+    public static void LoadImage(string url, Action<Sprite> callback = null)
     {
+        if (!URLValidator.IsValid(url))
+        {
+            callback?.Invoke(null);
+            return;
+        }
         Services.Instance.StartCoroutine(GetImage(url, callback));
     }
 
