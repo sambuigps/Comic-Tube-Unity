@@ -6,6 +6,11 @@ public class WebImage : MonoBehaviour
 {
     private Image image;
 
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+    }
+
     public void Init(string url)
     {
         UrlImageHandler.LoadImage(url, RenderImage);
