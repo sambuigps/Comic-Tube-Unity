@@ -15,4 +15,6 @@ public class ComicCard : MonoBehaviour
         this.noOfStars.SetText(noOfStars.ToString());
         this.status.SetText(status);
     }
+
+    
 }
