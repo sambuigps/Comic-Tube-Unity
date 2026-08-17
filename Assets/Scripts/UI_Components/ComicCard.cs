@@ -5,7 +5,6 @@ public class ComicCard : MonoBehaviour
 {
     [SerializeField] WebImage coverImage;
     [SerializeField] TMP_Text title;
-    [SerializeField] TMP_Text description;
     [SerializeField] TMP_Text noOfStars;
     [SerializeField] TMP_Text status;
 

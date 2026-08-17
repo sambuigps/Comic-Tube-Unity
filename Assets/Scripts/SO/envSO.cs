@@ -37,6 +37,7 @@ public class envSO : ScriptableObject
 
     [Header("constants")]
     public string platformType => GetPlatformType();
+    public string app_name;
 
     string GetPlatformType()
     {
