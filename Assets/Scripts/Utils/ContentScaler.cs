@@ -3,7 +3,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class ContentScaler : MonoBehaviour
 {
-    private float referenceHeight;
+    [SerializeField] float referenceHeight;
     [SerializeField] RectTransform content;
 
     RectTransform rt;
@@ -12,7 +12,6 @@ public class ContentScaler : MonoBehaviour
     void Awake()
     {
         rt = GetComponent<RectTransform>();
-        referenceHeight = rt.rect.height;
     }
 
     void Update()
@@ -24,6 +23,7 @@ public class ContentScaler : MonoBehaviour
 
         if (!Mathf.Approximately(currentHeight, lastHeight))
         {
+            if (referenceHeight <= 0) return; 
             float scale = currentHeight / referenceHeight;
             content.localScale = new Vector3(scale, scale, 1f);
             lastHeight = currentHeight;

@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6540f15b5c034b343bfcb47597b9c6d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ContentScaler
+  referenceHeight: 250
   content: {fileID: 5031183209002497259}
 --- !u!114 &7726379469339269464
 MonoBehaviour:
