@@ -335,6 +335,17 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &367983689 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6788424113630310232, guid: 46791d8ff853cae4481191389a4b6821, type: 3}
+  m_PrefabInstance: {fileID: 2754489199822172521}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a967346362c7fb4086e9e8cf51da454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UI_Home
 --- !u!1 &375751759 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1748275684553260786, guid: 46791d8ff853cae4481191389a4b6821, type: 3}
@@ -387,6 +398,7 @@ MonoBehaviour:
   so_data:
     env: {fileID: 11400000, guid: 4eeedfdf969b5294e9e58dc33fda168f, type: 2}
     saveDataKeys: {fileID: 11400000, guid: 7cc2e514655f5484b856534d8c0b1c32, type: 2}
+    prefabs: {fileID: 11400000, guid: 39e6d588a4046304b8be006bc87ab489, type: 2}
   ui_manager_data:
     allMenus:
     - type: 0
@@ -399,7 +411,50 @@ MonoBehaviour:
       reference: {fileID: 2754489199822172524}
     - type: 4
       reference: {fileID: 955225493}
+    - type: 5
+      reference: {fileID: 367983689}
     parent: {fileID: 375751759}
+--- !u!21 &796965092
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
+    - _WidthHeightRadius: {r: 980, g: 75, b: 50, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &955225493 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6613611346422773389, guid: 46791d8ff853cae4481191389a4b6821, type: 3}
@@ -411,6 +466,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56ab31fd50ccb5d42877e4b4f863e330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI_LogOut
+--- !u!21 &1945230756
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI/RoundedCorners/RoundedCorners
+  m_Shader: {fileID: 4800000, guid: 0bd2ec5d73751e34a814274a454bec41, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _OuterUV: {r: 0, g: 0, b: 1, a: 1}
+    - _WidthHeightRadius: {r: 980, g: 75, b: 50, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1001 &2754489199822172521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -503,6 +599,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI_Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2869386798274832445, guid: 46791d8ff853cae4481191389a4b6821, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 796965092}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -35,6 +35,17 @@ public class envSO : ScriptableObject
 
     public string GoogleClientId => platformType=="web" ? googleClientId_Web : googleClientId_App;
 
+    [Header("Dashboard endpoints")]
+    [SerializeField] string dashboardEndpoint;
+    [SerializeField] string recommendationEndpoint;
+
+    #region full enpoint generators
+    
+    private string DashboardEndpoint => apiBaseUrl + dashboardEndpoint;
+
+    public string RecommendationEndpoint => DashboardEndpoint + recommendationEndpoint;
+    #endregion
+
     [Header("constants")]
     public string platformType => GetPlatformType();
     public string app_name;

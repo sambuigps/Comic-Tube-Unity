@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,7 @@ public class UI_VerifyOtp : UI_BaseClass
 
     private void Awake()
     {
-        otpField.AddComponent<InputFieldValidator>().ConfigureNumeric(true, 6);
+        otpField.gameObject.AddComponent<InputFieldValidator>().ConfigureNumeric(true, 6);
     }
 
     private void OnEnable()
@@ -55,7 +54,7 @@ public class UI_VerifyOtp : UI_BaseClass
         else
         {
             Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
-            Services.UI.SetUI(UI_Type.LogOut);
+            Services.UI.SetUI(UI_Type.Home);
         }
     }
 

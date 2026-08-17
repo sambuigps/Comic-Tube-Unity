@@ -50,7 +50,7 @@ public class UI_Manager : BaseService<UI_Manager_Data>
     {
         AuthChecker.Check((isLoggedIn) =>
         {
-            SetUI(isLoggedIn?UI_Type.LogOut:UI_Type.LogIn);
+            SetUI(isLoggedIn?UI_Type.Home:UI_Type.LogIn);
         });
     }
 
@@ -152,5 +152,6 @@ public enum UI_Type
     LogIn,
     SignUp,
     VerifyOtp,
-    LogOut
+    LogOut,
+    Home
 }

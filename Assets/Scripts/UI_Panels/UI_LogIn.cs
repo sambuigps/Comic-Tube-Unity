@@ -82,7 +82,7 @@ public class UI_LogIn : UI_BaseClass
         else
         {
             Debug.Log("Username: " + response.data.user.username + " Email: " + response.data.user.email);
-            Services.UI.SetUI(UI_Type.LogOut);
+            Services.UI.SetUI(UI_Type.Home);
         }
     }
     #endregion
